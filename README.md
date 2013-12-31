@@ -4,7 +4,7 @@
 
 ## Installation
 
-This package will be available soon on [npm][1] as: `preffy-extend`
+This package is available on [npm][1] as: `preffy-extend`
 
 ``` sh
 npm install preffy-extend
