@@ -1,41 +1,43 @@
-var hasOwn = Object.prototype.hasOwnProperty;
-var toString = Object.prototype.toString;
-var undefined;
-
-var isPlainObject = function isPlainObject(obj) {
+function preffyExtend() {
 	"use strict";
-	if (!obj || toString.call(obj) !== '[object Object]' || obj.nodeType || obj.setInterval) {
-		return false;
-	}
+	var hasOwn = Object.prototype.hasOwnProperty;
+	var toString = Object.prototype.toString;
 
-	var has_own_constructor = hasOwn.call(obj, 'constructor');
-	var has_is_property_of_method = hasOwn.call(obj.constructor.prototype, 'isPrototypeOf');
-	// Not own constructor property must be Object
-	if (obj.constructor && !has_own_constructor && !has_is_property_of_method)
-		return false;
+	var isPlainObject = function isPlainObject(obj) {
+		"use strict";
+		if (!obj || toString.call(obj) !== '[object Object]' || obj.nodeType || obj.setInterval) {
+			return false;
+		}
 
-	// Own properties are enumerated firstly, so to speed up,
-	// if last one is own, then all properties are own.
-	var key;
-	for (key in obj) {}
+		var has_own_constructor = hasOwn.call(obj, 'constructor');
+		var has_is_property_of_method = hasOwn.call(obj.constructor.prototype, 'isPrototypeOf');
+		// Not own constructor property must be Object
+		if (obj.constructor && !has_own_constructor && !has_is_property_of_method)
+			return false;
 
-	return key === undefined || hasOwn.call(obj, key);
-};
+		// Own properties are enumerated firstly, so to speed up,
+		// if last one is own, then all properties are own.
+		var key;
+		for (key in obj) {}
 
-module.exports = function extend() {
-	"use strict";
+		return key === undefined || hasOwn.call(obj, key);
+	};
+
 	var options, name, src, copy, copyIsArray, clone,
-		target = arguments[0] || {},
-		i = 1,
+		target = arguments[1] || {},
+		weights = arguments[0] || [],
+		origWeights = weights.slice(),
+		i = 2,
 		length = arguments.length,
 		deep = false;
+	weights.reverse();
 
 	// Handle a deep copy situation
 	if (typeof target === "boolean") {
 		deep = target;
-		target = arguments[1] || {};
+		target = arguments[2] || {};
 		// skip the boolean and the target
-		i = 2;
+		i = 3;
 	}
 
 	// Handle case when target is a string or something (possible in deep copy)
@@ -56,6 +58,11 @@ module.exports = function extend() {
 					continue;
 				}
 
+				// Don't replace if replacement is weighted lower
+				if (weights.indexOf(typeof src) > weights.indexOf(typeof copy)) {
+					continue;
+				}
+
 				// Recurse if we're merging plain objects or arrays
 				if (deep && copy && (isPlainObject(copy) || (copyIsArray = Array.isArray(copy)))) {
 					if (copyIsArray) {
@@ -67,7 +74,7 @@ module.exports = function extend() {
 					}
 
 					// Never move original objects, clone them
-					target[name] = extend(deep, clone, copy);
+					target[name] = preffyExtend(origWeights, deep, clone, copy);
 
 				// Don't bring in undefined values
 				} else if (copy !== undefined) {
@@ -81,3 +88,4 @@ module.exports = function extend() {
 	return target;
 };
 
+typeof module!='undefined'?module.exports = preffyExtend:null;

@@ -1,31 +1,23 @@
 {
-	"name": "extend",
-	"author": "Stefan Thomas <justmoon@members.fsf.org> (http://www.justmoon.net)",
-	"version": "1.2.1",
-	"description": "Port of jQuery.extend for Node.js",
+	"name": "preffy-extend",
+	"author": "Scimonster (https://github.com/Scimonster)",
+	"version": "0.0.1",
+	"description": "A version of the extend package that supports preferring types",
 	"main": "index",
-	"scripts": {
-		"test": "node test/index.js"
-	},
 	"contributors": [
-		{
-			"name": "Jordan Harband",
-			"url": "https://github.com/ljharb"
-		}
+		"Jordan Harband (https://github.com/ljharb)",
+		"Stefan Thomas <justmoon@members.fsf.org> (http://www.justmoon.net)"
 	],
 	"keywords": [
+		"weighted",
 		"extend",
 		"clone",
 		"merge"
 	],
 	"repository" : {
 		"type": "git",
-		"url": "https://github.com/justmoon/node-extend.git"
+		"url": "https://github.com/Scimonster/weighted-extend.git"
 	},
-	"dependencies": {
-	},
-	"devDependencies": {
-		"tape" : "~2.3.2"
-	}
+	"dependencies": {},
 }
 
